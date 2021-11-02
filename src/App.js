@@ -1,5 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'
+import './styles.css'
+import './bootstrap.css'
+import './mdb.min.css'
+import './transition.css'
 
 function App() {
   return (
@@ -19,7 +22,7 @@ function App() {
         </a>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
