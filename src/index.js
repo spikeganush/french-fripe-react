@@ -1,15 +1,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
 
+// import { Provider } from 'react-redux'
+// import { applyMiddleware, createStore } from 'redux'
 import App from './App'
-import * as serviceWorker from './serviceWorker'
+// import thunk from 'redux-thunk'
+// import rootReducer from './reducers'
+// import { getUsers } from './actions/users.actions'
+
+// dev tools
+// import { composeWithDevTools } from 'redux-devtools-extension'
+
+// const store = createStore(
+//   rootReducer,
+//   composeWithDevTools(applyMiddleware(thunk))
+// )
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  // <Provider store={store}>
+  <App />,
+  // </Provider>
   document.getElementById('root')
 )
-
-serviceWorker.unregister()
