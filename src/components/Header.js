@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+
 import logo from '../img/french_fripe_logo.png'
+import Menu from './Menu'
 
 function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -26,12 +28,7 @@ function Header() {
                 </NavLink>
               </li>
               <div className="link-phone">
-                <NavLink exact to="/trends" className="nav-link">
-                  Trends
-                </NavLink>
-                <NavLink exact to="/category" className="nav-link">
-                  Category
-                </NavLink>
+                <Menu />
               </div>
               <li>
                 <NavLink exact to="/about-us" className="nav-link">

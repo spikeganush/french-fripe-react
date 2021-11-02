@@ -17,7 +17,10 @@ function AboutUs() {
               nulla pariatur. Excepteur sint occaecat cupidatat non proident,
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
-            <img src="http://frenchfripe.com/wp-content/uploads/2016/07/IMG_6899-14-01-17-02-16.jpeg" />
+            <img
+              src="http://frenchfripe.com/wp-content/uploads/2016/07/IMG_6899-14-01-17-02-16.jpeg"
+              alt="about-us"
+            />
 
             <p>
               Lacus laoreet non curabitur gravida arcu ac tortor dignissim.

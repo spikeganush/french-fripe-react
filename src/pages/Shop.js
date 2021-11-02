@@ -1,6 +1,7 @@
 import React from 'react'
 import Carousel from '../components/Carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import MenuLeft from '../components/MenuLeft'
 
 import carrousel1 from '../img/RalphLaurenPoloTees-2_394x.jpg'
 import carrousel2 from '../img/FestivalCrazyPatternedShirts-2_394x.jpg'
@@ -15,13 +16,7 @@ function Shop() {
               <h4>Categories:</h4>
               <br />
               <div className="list-group">
-                <a href="index.php" className="list-group-item active">
-                  Trends
-                </a>
-
-                <a href="categorie.php" className="list-group-item">
-                  Category
-                </a>
+                <MenuLeft />
               </div>
             </div>
           </div>
