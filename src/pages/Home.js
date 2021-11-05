@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Home() {
-  return <></>
+  return <main>Home</main>
 }
 
 export default Home

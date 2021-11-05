@@ -1,5 +1,5 @@
 import React from 'react'
-import Carousel from '../components/Carousel'
+import CarouselTrend from '../components/CarouselTrend'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import MenuLeft from '../components/MenuLeft'
 
@@ -29,7 +29,7 @@ function Shop() {
 
             <div className="row">
               <div className="col-lg-12">
-                <Carousel />
+                <CarouselTrend />
               </div>
             </div>
 

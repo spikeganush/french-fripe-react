@@ -3,9 +3,9 @@ import React from 'react'
 function Terms() {
   return (
     <main>
-      <div class="container">
-        <div class="row">
-          <div class="col_about">
+      <div className="container">
+        <div className="row">
+          <div className="col_about">
             <h1>Terms and conditions</h1>
 
             <p>

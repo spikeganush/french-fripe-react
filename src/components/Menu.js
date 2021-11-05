@@ -3,7 +3,7 @@ import db from '../firebase'
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 
-function Menu() {
+function Menu(props) {
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
@@ -16,9 +16,16 @@ function Menu() {
   return (
     <>
       {categories.map((category) => (
-        <NavLink exact to={'/category/' + category.id} className="nav-link">
-          {category.name}
-        </NavLink>
+        <li key={category.id}>
+          <NavLink
+            exact
+            to={'/category/' + category.id}
+            className="nav-link"
+            onClick={() => props.click(false)}
+          >
+            - {category.name}
+          </NavLink>
+        </li>
       ))}
     </>
   )

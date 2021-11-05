@@ -9,6 +9,12 @@
   box-sizing: inherit;
 }
 
+#root {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
 /*..........Upload script............*/
 
 .alert-success {
@@ -56,7 +62,7 @@
 .panel-body:after,
 .panel-body:before {
   display: table;
-  content: " ";
+  content: ' ';
   clear: both;
 }
 
@@ -158,16 +164,153 @@
   text-align: center;
 }
 /*.........End upload script.......*/
+
+header {
+  background-color: var(--main-color);
+}
+
+.log-container {
+  margin: 0 auto;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 60% 40%;
+}
+
+.popup-profil-container {
+  z-index: 100;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  position: fixed;
+  animation: popup 1s forwards;
+}
+
+@keyframes popup {
+  to {
+    backdrop-filter: blur(2px);
+  }
+}
+
+.popup-profil-container .modal {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-100%);
+  background: var(--main-color);
+  padding: 5px;
+  border-radius: 20px;
+  box-shadow: 0 0 2px rgba(131, 130, 130, 0.356);
+  overflow: auto;
+  transform: scaleY(0);
+  transform-origin: center;
+  animation: modal 0.5s forwards;
+}
+
+.popup-profil-container .modal h3 {
+  min-width: 200px;
+}
+
+@keyframes modal {
+  to {
+    transform: scale(1) translate(-50%);
+  }
+}
+
+.popup-profil-container .modal .cross {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  transition: 0.1s;
+  cursor: pointer;
+}
+
+.popup-profil-container .modal .cross:hover {
+  transform: scale(1.07);
+}
+
+.popup-profil-container .modal ul {
+  margin: 20px 0 0;
+  max-height: 500px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.popup-profil-container .modal ul::-webkit-scrollbar {
+  width: 2px;
+}
+
+.popup-profil-container .modal ul::-webkit-scrollbar-track {
+  background: var(--main-color);
+}
+
+.popup-profil-container .modal ul::-webkit-scrollbar-thumb {
+  background: var(--main-color);
+}
+
+.popup-profil-container .modal ul::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.popup-profil-container .modal ul li {
+  display: grid;
+  grid-template-columns: 64px 1fr 114px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.popup-profil-container .modal ul li img {
+  height: 50px;
+  width: 50px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 0 2px rgba(51, 51, 51, 0.376);
+}
+
+.popup-profil-container .modal ul li h4 {
+  text-align: left;
+  min-width: 210px;
+}
+
+.popup-profil-container .modal ul li {
+  text-align: left;
+}
+
+.popup-profil-container .modal ul li button {
+  background: var(--color-4);
+  border-radius: 20px;
+  margin-right: 6px;
+}
+
+.popup-profil-container .modal ul li button:hover {
+  color: #00162c;
+  transform: translateX(2px);
+}
+
+.shop {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 30px 10px 0;
+  color: white;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 20px;
+}
+
+.shop_icon {
+  min-width: 70px;
+  display: flex;
+  justify-content: space-between;
+}
 .category_name {
   text-align: center;
 }
 
 .green {
-  color:#009578;
+  color: #009578;
 }
 
 .red {
-  color:#d72229;
+  color: #d72229;
 }
 
 .product_title a {
@@ -181,7 +324,7 @@
   z-index: -2;
 }
 
-.addProduct.open{
+.addProduct.open {
   opacity: 1;
   z-index: 1;
 }
@@ -191,7 +334,7 @@
   z-index: -2;
 }
 
-.editProduct.open{
+.editProduct.open {
   opacity: 1;
   z-index: 1;
 }
@@ -226,7 +369,7 @@
 }
 
 .online__fill {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   position: relative;
   width: var(--width);
   height: var(--height);
@@ -236,7 +379,7 @@
 }
 
 .online__fill::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -264,31 +407,25 @@
   width: 400px;
   margin-bottom: 1rem;
   border-bottom: 1px solid rgb(0, 0, 0, 0.2);
-  
 }
 
 @media only screen and (max-width: 480px) {
-
   .list_categories {
-    font-size: .8rem;
+    font-size: 0.8rem;
     width: 200px;
     left: -10px;
-}
-
+  }
 }
 
 @media only screen and (max-width: 470px) {
-
-  .online_update {font-size: .6rem;
+  .online_update {
+    font-size: 0.6rem;
   }
-
 }
 .carousel__img {
   object-fit: contain;
   max-height: 450px;
 }
-
-
 
 .erase_categories {
   visibility: hidden;
@@ -345,7 +482,7 @@
 }
 
 .hidden_login a::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: 0;
@@ -423,7 +560,7 @@ label {
 a,
 area,
 button,
-[role="button"],
+[role='button'],
 input,
 label,
 select,
@@ -509,8 +646,8 @@ label {
 
 body {
   display: block;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   font-size: 1rem;
   font-weight: normal;
   line-height: 1.5;
@@ -575,7 +712,7 @@ img {
 
 .divider-new::after,
 .divider-new::before {
-  content: "";
+  content: '';
   height: 1.5px;
   background: #666;
 }
@@ -650,11 +787,6 @@ h6,
   color: inherit;
 }
 
-main {
-  padding-top: 3rem;
-  padding-bottom: 2rem;
-}
-
 h5,
 .h5 {
   font-size: 1.25rem;
@@ -721,7 +853,6 @@ h5,
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background-color: var(--main-color);
   font-weight: bold;
 }
 
@@ -824,7 +955,7 @@ img {
 }
 
 .nav-link::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: 0;
@@ -849,7 +980,7 @@ img {
 }
 
 .list-group-item::after {
-  content: "";
+  content: '';
   position: absolute;
   background: var(--main-color);
   width: 100%;
@@ -963,7 +1094,7 @@ img {
 
 .divider-new::after,
 .divider-new::before {
-  content: "";
+  content: '';
   height: 1.5px;
   background: #666;
 }
@@ -1166,7 +1297,7 @@ img {
   display: inline-block;
   width: 100%;
   height: 10px;
-  content: "";
+  content: '';
 }
 
 .carousel-indicators li::after {
@@ -1176,7 +1307,7 @@ img {
   display: inline-block;
   width: 100%;
   height: 10px;
-  content: "";
+  content: '';
 }
 
 .carousel-indicators .active {
@@ -1209,7 +1340,7 @@ hr {
 }
 
 .top-text::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
@@ -1219,7 +1350,7 @@ hr {
 }
 
 .top-text::after {
-  content: "";
+  content: '';
   position: absolute;
   right: 0;
   bottom: -5px;
@@ -1676,7 +1807,7 @@ footer.page-footer .social-section ul li {
 }
 
 .price::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -10px;
   left: 0;
@@ -1802,8 +1933,16 @@ button {
   text-decoration: none;
   color: #fff;
   font-size: 1.4rem;
-  margin-left: 40px;
+  margin-left: 50px;
   margin-bottom: 5px;
+}
+
+.link-phone a:last-child {
+  margin-bottom: 15px;
+}
+
+.link-phone a:first-child {
+  margin-top: 0;
 }
 
 .product__left {
@@ -1818,10 +1957,17 @@ button {
 ------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------*/
 
-@media only screen and (max-width: 1320px) {
+@media only screen and (max-width: 1470px) {
   .top-text,
   .login_hide {
     font-size: 2.5rem !important;
+  }
+}
+
+@media only screen and (max-width: 1320px) {
+  .top-text,
+  .login_hide {
+    font-size: 2rem !important;
   }
 
   .col-lg-4 > .card > .back {
@@ -1956,8 +2102,6 @@ button {
   }
 }
 
-
-
 .col-lg-2 {
   flex: 0 0 16.666667%;
   max-width: 16.666667%;
@@ -1982,12 +2126,10 @@ button {
 /*----------------------------------Tablet Breakpoint----------------------------------*/
 
 @media only screen and (max-width: 768px) {
-
-  
   .pbtn {
     justify-content: center;
   }
-  
+
   .quantity-select {
     justify-content: center;
     align-items: center;
@@ -1997,7 +2139,7 @@ button {
     height: 50px;
     max-width: 50%;
   }
-  
+
   .button.minus,
   .button.plus {
     height: 50px;
@@ -2103,16 +2245,13 @@ button {
 /*----------------------------------Phone breakpoint----------------------------------*/
 
 @media only screen and (max-width: 480px) {
-
-  
-
   .product__carousel {
     margin-right: 0;
   }
   .card:hover .front {
     transform: translateY(-45%) scale(0.8);
   }
-  
+
   .top-text,
   .login_hide {
     font-size: 1.3rem !important;
@@ -2162,11 +2301,6 @@ button {
     margin-bottom: 15px;
   }
 
-  main {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-
   .card-block {
     padding: 0.2rem;
     height: 100px;
@@ -2182,8 +2316,6 @@ button {
   .back .card-title {
     font-size: 14px;
   }
-
- 
 
   .card-text {
     font-size: 10px;
@@ -2203,8 +2335,6 @@ button {
     font-size: 16px;
     text-align: center;
   }
-
-  
 }
 
 /*----------------------------------Old phone breakpoint----------------------------------*/

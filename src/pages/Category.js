@@ -1,9 +1,10 @@
 import {
   onSnapshot,
   collection,
-  orderBy,
   query,
   where,
+  doc,
+  getDoc,
 } from '@firebase/firestore'
 import db from '../firebase'
 import React, { useState, useEffect } from 'react'
@@ -16,10 +17,15 @@ function Category() {
   const { id } = useParams()
 
   useEffect(() => {
-    const q = query(collection(db, 'categories'), orderBy('position'))
-    onSnapshot(q, (snapshot) => {
-      setCategories(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-    })
+    let cancel = false
+    const getCategory = async () => {
+      const category = await getDoc(doc(db, 'categories', id))
+      if (cancel) return
+      else {
+        setCategories(category.data())
+      }
+    }
+    getCategory()
 
     const q2 = query(
       collection(db, 'products'),
@@ -29,7 +35,9 @@ function Category() {
       setProducts(snapshot2.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     })
 
-    console.log(products)
+    return () => {
+      cancel = true
+    }
   }, [id])
 
   return (
@@ -47,15 +55,11 @@ function Category() {
           </div>
 
           <div className="col__right categorie">
-            <h4 className="category_name">
-              {categories.map((category) =>
-                category.id === id ? category.name : null
-              )}
-            </h4>
+            <h4 className="category_name">{categories.name}</h4>
             <hr className="extra-margins" />
             <div className="row">
               {products.map((product) => (
-                <div className="col-lg-4 categorie">
+                <div className="col-lg-4 categorie" key={product.id}>
                   <div className="card">
                     <div className="front">
                       <div className="card__photo">
@@ -85,12 +89,13 @@ function Category() {
                         <p>{product.short_description}</p>
                       </div>
                       <div className="button">
-                        <a
-                          href={'product/' + product.id}
+                        <NavLink
+                          exact
+                          to={'../product/' + product.id}
                           className="btn btn-default"
                         >
                           More info
-                        </a>
+                        </NavLink>
                       </div>
                     </div>
                     <div className="background"></div>

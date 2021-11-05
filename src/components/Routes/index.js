@@ -13,6 +13,7 @@ import Footer from '../Footer'
 import Home from '../../pages/Home'
 import AboutUs from '../../pages/AboutUs'
 import Category from '../../pages/Category'
+import Product from '../../pages/Product'
 import Shop from '../../pages/Shop'
 import Terms from '../../pages/Terms'
 import Trends from '../../pages/Trends'
@@ -25,6 +26,7 @@ const index = () => {
       <Route path="/shop" exact component={Shop} />
       <Route path="/about-us" exact component={AboutUs} />
       <Route path="/category/:id" exact component={Category} />
+      <Route path="/product/:id" exact component={Product} />
       <Route path="/terms" exact component={Terms} />
       <Route path="/trends" exact component={Trends} />
       <Switch>

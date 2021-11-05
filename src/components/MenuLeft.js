@@ -20,6 +20,7 @@ function MenuLeft() {
           exact
           to={'/category/' + category.id}
           className="list-group-item"
+          key={category.id}
         >
           {category.name}
         </NavLink>
