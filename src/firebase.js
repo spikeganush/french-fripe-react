@@ -1,10 +1,8 @@
-// Import the functions you need from the SDKs you need
+import { useEffect, useState } from 'react'
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyC2yrO0st3cZFg2WPaYG7O81WKWrM4LWo4',
   authDomain: 'french-fripe.firebaseapp.com',
@@ -16,4 +14,26 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+
+export function logout() {
+  return signOut(auth)
+}
+
+// Custom Hook
+export function useAuth() {
+  const [currentUser, setCurrentUser] = useState()
+  useEffect(() => {
+    let mounted = true
+    if (mounted) {
+      const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user))
+      return unsub
+    }
+
+    return () => (mounted = false)
+  }, [currentUser])
+
+  return currentUser
+}
+
 export default getFirestore(app)

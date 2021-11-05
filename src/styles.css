@@ -70,10 +70,6 @@
   font-size: 24px !important;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
 .alert-danger {
   background-color: #f2dede;
   border-color: #ebcccc;
@@ -169,13 +165,6 @@ header {
   background-color: var(--main-color);
 }
 
-.log-container {
-  margin: 0 auto;
-  display: grid;
-  justify-content: center;
-  grid-template-columns: 60% 40%;
-}
-
 .popup-profil-container {
   z-index: 100;
   width: 100%;
@@ -189,6 +178,19 @@ header {
 @keyframes popup {
   to {
     backdrop-filter: blur(2px);
+  }
+}
+
+.log-container {
+  margin: 0 auto;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 60% 40%;
+}
+
+@media screen and (max-width: 885px) {
+  .log-container {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -287,6 +289,63 @@ header {
   transform: translateX(2px);
 }
 
+.form-group,
+.form-group label,
+.form-group input {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+}
+
+.form-group input,
+.edit-delete textarea,
+.form-group textarea {
+  padding: 10px 20px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background-color: #eee;
+  outline-width: 0;
+  font-size: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 0 2px black;
+  resize: vertical;
+}
+
+.form-group input:focus {
+  border-bottom: 3px solid var(--main-color);
+}
+
+.fa-user.connected {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 60%,
+    rgba(0, 255, 0, 1) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.profile-link {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(0, 255, 0, 1) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0;
+}
+
 .shop {
   display: flex;
   justify-content: flex-end;
@@ -300,7 +359,9 @@ header {
   min-width: 70px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
+
 .category_name {
   text-align: center;
 }
@@ -531,10 +592,6 @@ header {
   opacity: 1;
   z-index: 999;
   transition: opacity 0.7s;
-}
-
-.form-group {
-  margin-bottom: 1rem;
 }
 
 label {

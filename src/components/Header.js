@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Log from './auth'
-
+import { useAuth } from '../firebase'
 import logo from '../img/french_fripe_logo.png'
 import Menu from './Menu'
 
 function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [loginPopup, setLoginPopup] = useState(false)
+  const [popup, setPopUp] = useState(false)
+
+  const currentUser = useAuth()
 
   return (
     <>
@@ -72,10 +74,7 @@ function Header() {
             </div>
           </div>
 
-          <div className="top-text">
-            Second hand vintage Wholesal
-            <span className="login_hide">e</span>
-          </div>
+          <div className="top-text">Second hand vintage Wholesale</div>
           <button
             className="nav-button"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -94,19 +93,30 @@ function Header() {
         <section className="shop">
           <div className="shop_icon">
             <i className="fas fa-shopping-cart"></i>{' '}
-            <i className="fas fa-user" onClick={() => setLoginPopup(true)}></i>
+            {currentUser ? (
+              <NavLink exact to="/profile" className="profile-link">
+                <i className="fas fa-user"></i>
+              </NavLink>
+            ) : (
+              <i className="fas fa-user" onClick={() => setPopUp(true)}></i>
+            )}
           </div>
         </section>
       </header>
 
-      {loginPopup && (
+      {popup && (
         <div className="popup-profil-container">
           <div className="modal">
-            <span className="cross" onClick={() => setLoginPopup(false)}>
+            <span className="cross" onClick={() => setPopUp(false)}>
               &#10005;
             </span>
             <div className="log-container">
-              <Log signin={true} signup={false} forgot={false} />
+              <Log
+                signin={true}
+                signup={false}
+                forgot={false}
+                popup={setPopUp}
+              />
             </div>
           </div>
         </div>

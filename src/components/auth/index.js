@@ -1,4 +1,12 @@
 import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+// import db, { signup, login, useAuth } from '../../firebase'
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth'
 
 import './LoginScreen.css'
 import './RegisterScreen.css'
@@ -9,6 +17,7 @@ const Log = (props) => {
   const [registerScreenModal, setRegisterScreenModal] = useState(props.signup)
   const [loginScreenModal, setLoginScreenModal] = useState(props.signin)
   const [forgotPasswordModal, setForgotPasswordModal] = useState(props.forgot)
+  let history = useHistory()
 
   const handleModals = (e) => {
     if (e.target.id === 'register') {
@@ -26,13 +35,22 @@ const Log = (props) => {
     }
   }
 
-  function LoginScreen() {
+  const LoginScreen = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
-    const loginHandler = async (e) => {
+    const loginHandler = (e) => {
       e.preventDefault()
+
+      const auth = getAuth()
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          props.popup(false)
+          history.push('/profile')
+        })
+        .catch((e) => console.log(e.message))
     }
 
     return (
@@ -69,8 +87,8 @@ const Log = (props) => {
             tabIndex={2}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Login
+        <button disabled={loading} type="submit" className="btn btn-primary">
+          {loading ? 'Loading ...' : 'Login'}
         </button>
 
         <span className="login-screen__subtext">
@@ -93,12 +111,6 @@ const Log = (props) => {
     const registerHandler = async (e) => {
       e.preventDefault()
 
-      const config = {
-        header: {
-          'Content-Type': 'application/json',
-        },
-      }
-
       if (password !== confirmpassword) {
         setPassword('')
         setConfirmPassword('')
@@ -107,6 +119,16 @@ const Log = (props) => {
         }, 5000)
         return setError('Passwords do not match')
       }
+
+      const auth = getAuth()
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          updateProfile(auth.currentUser, { displayName: username })
+          props.popup(false)
+          history.push('/profile')
+        })
+        .catch((e) => console.log(e.message))
     }
 
     return (
@@ -176,16 +198,11 @@ const Log = (props) => {
   const ForgotPasswordScreen = () => {
     const [email, setEmail] = useState('')
     const [error, setError] = useState('')
-    const [success, setSuccess] = useState('')
+    // const [success, setSuccess] = useState('')
 
     const forgotPasswordHandler = async (e) => {
       e.preventDefault()
-
-      const config = {
-        header: {
-          'Content-Type': 'application/json',
-        },
-      }
+      setError('Teeeeest')
     }
 
     return (
@@ -195,7 +212,7 @@ const Log = (props) => {
       >
         <h3 className="forgotpassword-screen__title">Forgot Password</h3>
         {error && <span className="error-message">{error}</span>}
-        {success && <span className="success-message">{success}</span>}
+        {/* {success && <span className="success-message">{success}</span>} */}
         <div className="form-group">
           <p className="forgotpassword-screen__subtext">
             Please enter the email address you register your account with. We

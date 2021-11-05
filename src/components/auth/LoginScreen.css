@@ -28,3 +28,21 @@
   display: block;
   margin: 0.5rem 0;
 }
+
+@media screen and (max-width: 585px) {
+  .login-screen__form {
+    width: 320px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .login-screen__form {
+    width: 260px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .login-screen__form {
+    width: 200px;
+  }
+}

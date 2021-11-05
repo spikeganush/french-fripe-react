@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 //components
 import Header from '../Header'
@@ -17,20 +12,21 @@ import Product from '../../pages/Product'
 import Shop from '../../pages/Shop'
 import Terms from '../../pages/Terms'
 import Trends from '../../pages/Trends'
+import Profile from '../../pages/Profile'
 
 const index = () => {
   return (
     <Router>
       <Header />
-      <Route path="/" exact component={Home} />
-      <Route path="/shop" exact component={Shop} />
-      <Route path="/about-us" exact component={AboutUs} />
-      <Route path="/category/:id" exact component={Category} />
-      <Route path="/product/:id" exact component={Product} />
-      <Route path="/terms" exact component={Terms} />
-      <Route path="/trends" exact component={Trends} />
       <Switch>
-        <Redirect to="/" />
+        <Route path="/" exact component={Home} />
+        <Route path="/shop" exact component={Shop} />
+        <Route path="/about-us" exact component={AboutUs} />
+        <Route path="/category/:id" exact component={Category} />
+        <Route path="/product/:id" exact component={Product} />
+        <Route path="/terms" exact component={Terms} />
+        <Route path="/trends" exact component={Trends} />
+        <Route path="/profile" exact component={Profile} />
       </Switch>
       <Footer />
     </Router>
