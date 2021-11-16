@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-// import db, { signup, login, useAuth } from '../../firebase'
+import db from '../../firebase'
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth'
+
+import { doc, setDoc } from '@firebase/firestore'
 
 import './LoginScreen.css'
 import './RegisterScreen.css'
@@ -43,6 +45,7 @@ const Log = (props) => {
 
     const loginHandler = (e) => {
       e.preventDefault()
+      setLoading(true)
 
       const auth = getAuth()
       signInWithEmailAndPassword(auth, email, password)
@@ -50,7 +53,7 @@ const Log = (props) => {
           props.popup(false)
           history.push('/profile')
         })
-        .catch((e) => console.log(e.message))
+        .catch((e) => setError(e.message))
     }
 
     return (
@@ -125,6 +128,14 @@ const Log = (props) => {
       createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
           updateProfile(auth.currentUser, { displayName: username })
+          setDoc(doc(db, 'users', auth.currentUser.uid), {
+            id: auth.currentUser.uid,
+            email: auth.currentUser.email,
+            displayName: username,
+            photoURL: auth.currentUser.photoURL,
+            phoneNumber: auth.currentUser.phoneNumber,
+            admin: false,
+          })
           props.popup(false)
           history.push('/profile')
         })
