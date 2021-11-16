@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const MenuProfile = (props) => {
+function MenuProfile(props) {
   return (
     <>
       <NavLink exact to={'/previous-order'} className="list-group-item">
@@ -11,7 +11,7 @@ const MenuProfile = (props) => {
         Settings
       </NavLink>
       {props.admin ? (
-        <NavLink exact to={'/admin'} className="list-group-item">
+        <NavLink exact to={'/admin/'} className="list-group-item">
           Admin
         </NavLink>
       ) : null}

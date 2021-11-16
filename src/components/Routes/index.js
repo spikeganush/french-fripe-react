@@ -13,6 +13,10 @@ import Shop from '../../pages/Shop'
 import Terms from '../../pages/Terms'
 import Trends from '../../pages/Trends'
 import Profile from '../../pages/Profile'
+import Admin from '../../pages/Admin'
+import AdminProducts from '../../pages/AdminProducts'
+import AdminCategories from '../../pages/AdminCategories'
+import AdminEditProduct from '../../pages/AdminEditProduct'
 
 const index = () => {
   return (
@@ -27,6 +31,10 @@ const index = () => {
         <Route path="/terms" exact component={Terms} />
         <Route path="/trends" exact component={Trends} />
         <Route path="/profile" exact component={Profile} />
+        <Route path="/admin/" exact component={Admin} />
+        <Route path="/admin/products" exact component={AdminProducts} />
+        <Route path="/admin/product/:id" exact component={AdminEditProduct} />
+        <Route path="/admin/categories" exact component={AdminCategories} />
       </Switch>
       <Footer />
     </Router>

@@ -1,11 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { logout } from '../firebase'
 import { getAuth } from '@firebase/auth'
 import MenuProfile from '../components/MenuProfile'
+import db from '../firebase'
+import { doc, getDoc } from '@firebase/firestore'
 
 function Profile({ history }) {
   const auth = getAuth()
   const user = auth.currentUser
+
+  const [currentUser, setCurrentUser] = useState()
+  const [run, setRun] = useState(true)
+
+  useEffect(() => {
+    const docRef = doc(db, 'users', user.uid)
+
+    if (run) {
+      getDoc(docRef).then((docSnap) => {
+        if (docSnap.exists()) {
+          setCurrentUser(docSnap.data())
+          setRun(false)
+        }
+      })
+    }
+  }, [user.uid, currentUser, run])
 
   const handleLogout = async () => {
     try {
@@ -24,7 +42,7 @@ function Profile({ history }) {
               <h4>Menu:</h4>
               <br />
               <div className="list-group">
-                <MenuProfile admin={user.admin} />
+                <MenuProfile admin={currentUser?.admin} />
               </div>
             </div>
           </div>

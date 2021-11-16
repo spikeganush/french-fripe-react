@@ -161,6 +161,26 @@
 }
 /*.........End upload script.......*/
 
+.success-message {
+  color: green;
+  text-align: center;
+}
+
+/*..........Admin area............*/
+
+.admin-category {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-category-item {
+  display: flex;
+  list-style-type: circle;
+  margin-bottom: 1rem;
+}
+
+/*..........End admin area.......*/
+
 header {
   background-color: var(--main-color);
 }
@@ -631,6 +651,7 @@ textarea {
     font-size: 1.3rem !important;
   }
 }
+
 /* ...............Login style*/
 
 * {
