@@ -4,8 +4,10 @@ import { getAuth } from '@firebase/auth'
 import MenuProfile from '../components/MenuProfile'
 import db from '../firebase'
 import { doc, getDoc } from '@firebase/firestore'
+import { useHistory } from 'react-router-dom'
 
-function Profile({ history }) {
+function Profile() {
+  let history = useHistory()
   const auth = getAuth()
   const user = auth.currentUser
 
@@ -13,17 +15,23 @@ function Profile({ history }) {
   const [run, setRun] = useState(true)
 
   useEffect(() => {
-    const docRef = doc(db, 'users', user.uid)
+    if (!user) {
+      history.push('/')
+    } else {
+      const docRef = doc(db, 'users', user.uid)
 
-    if (run) {
-      getDoc(docRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          setCurrentUser(docSnap.data())
-          setRun(false)
-        }
-      })
+      if (run) {
+        getDoc(docRef).then((docSnap) => {
+          if (docSnap.exists()) {
+            setCurrentUser(docSnap.data())
+            setRun(false)
+          }
+        })
+      }
     }
-  }, [user.uid, currentUser, run])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user ? (user.uid, currentUser, run) : null])
 
   const handleLogout = async () => {
     try {
@@ -48,7 +56,7 @@ function Profile({ history }) {
           </div>
 
           <div className="col__right categorie">
-            <h4 className="category_name">Hello {user.displayName}</h4>
+            <h4 className="category_name">Hello {user?.displayName}</h4>
             <hr className="extra-margins" />
             <div className="row">
               <button

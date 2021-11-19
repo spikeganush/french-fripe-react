@@ -1,7 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MenuAdmin from '../components/MenuAdmin'
+import { useHistory } from 'react-router-dom'
 
-function Admin() {
+//firebase
+import { getAuth } from '@firebase/auth'
+
+function Admin({ props }) {
+  let history = useHistory()
+  const auth = getAuth()
+  const user = auth.currentUser
+
+  useEffect(() => {
+    if (!user) {
+      history.push('/')
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <main>
       <div className="container">
