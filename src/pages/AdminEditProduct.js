@@ -3,15 +3,25 @@ import {
   doc,
   getDoc,
   query,
-  setDoc,
+  updateDoc,
   onSnapshot,
   orderBy,
+  arrayUnion,
+  arrayRemove,
 } from '@firebase/firestore'
 import db from '../firebase'
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import Dropzone from '../components/Dropzone'
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage'
 
 import MenuAdmin from '../components/MenuAdmin'
+import { Carousel } from 'react-responsive-carousel'
 
 function AdminEditProduct() {
   const [products, setProducts] = useState([])
@@ -28,7 +38,19 @@ function AdminEditProduct() {
   const [productNumberBoxe, setProductNumberBoxe] = useState('')
   const [productWeight, setProductWeight] = useState('')
   const [productOnline, setProductOnline] = useState(false)
+  const [productTrend, setProductTrend] = useState(false)
+  const [productHomePage, setProductHomePage] = useState(false)
+  const [productImage, setProductImage] = useState([])
   const [success, setSuccess] = useState('')
+
+  const [imageList, setImageList] = useState([])
+  const storage = getStorage()
+
+  const changeImageField = (index, parameter, value) => {
+    const newArray = [...imageList]
+    newArray[index][parameter] = value
+    setImageList(newArray)
+  }
 
   const handleUpdate = async () => {
     if (
@@ -41,9 +63,11 @@ function AdminEditProduct() {
       productAverageTotalPiece &&
       productNumberBoxe &&
       productWeight &&
-      productOnline !== ''
+      productOnline !== '' &&
+      productTrend !== '' &&
+      productHomePage !== ''
     ) {
-      await setDoc(doc(db, 'products', id), {
+      await updateDoc(doc(db, 'products', id), {
         name: productName,
         categories_id: productCategory,
         price: productPrice,
@@ -54,6 +78,8 @@ function AdminEditProduct() {
         number_boxe: productNumberBoxe,
         weight: productWeight,
         online: productOnline,
+        trend: productTrend,
+        home_page: productHomePage,
       }).then(() => {
         setSuccess('Update succeed')
         setTimeout(() => {
@@ -66,6 +92,13 @@ function AdminEditProduct() {
         setSuccess('')
       }, 3000)
     }
+  }
+
+  const handleDeleteImage = async (imageId) => {
+    const docRef = doc(db, 'products', productId)
+    await updateDoc(docRef, {
+      images: arrayRemove(imageId),
+    })
   }
 
   useEffect(() => {
@@ -86,7 +119,10 @@ function AdminEditProduct() {
         setProductAverageTotalPiece(products.average_total_piece)
         setProductNumberBoxe(products.number_boxe)
         setProductWeight(products.weight)
-        setProductOnline(products.online)
+        setProductImage(products.images)
+        setProductOnline(products.online ? products.online : false)
+        setProductTrend(products.trend ? products.trend : false)
+        setProductHomePage(products.home_page ? products.home_page : false)
       }
     }
     getProduct()
@@ -101,7 +137,57 @@ function AdminEditProduct() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, productId])
+  }, [productId])
+
+  useEffect(() => {
+    imageList.forEach((image, index) => {
+      if (image.status === 'FINISH' || image.status === 'UPLOADING') return
+      changeImageField(index, 'status', 'UPLOADING')
+      const fileName = `${image.file.lastModified}.${
+        image.file.type === 'image/jpeg' ? 'jpg' : 'png'
+      }`
+      const storageRef = ref(storage, `images/${fileName}`)
+      const uploadTask = uploadBytesResumable(storageRef, image.file)
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          console.log('Upload is ' + progress + '% done')
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused')
+              break
+            case 'running':
+              console.log('Upload is running')
+              break
+            default:
+              console.log('Upload is done')
+              break
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log('Upload failed: ' + error)
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            changeImageField(index, 'downloadURL', downloadURL)
+            changeImageField(index, 'status', 'FINISH')
+            const addImageDb = async () => {
+              const updateProduct = doc(db, 'products', productId)
+              await updateDoc(updateProduct, {
+                images: arrayUnion(downloadURL),
+              })
+            }
+            addImageDb()
+          })
+        }
+      )
+    })
+  })
 
   return (
     <main>
@@ -120,7 +206,31 @@ function AdminEditProduct() {
           <div className="col__right">
             <div className="product">
               <div className="product__left">
-                <div className="product__carousel"></div>
+                <div className="product__carousel">
+                  <Carousel
+                    autoPlay
+                    infiniteLoop
+                    interval={5000}
+                    enableTouch
+                    showThumbs={false}
+                    showStatus={false}
+                  >
+                    {productImage?.map((image, index) => (
+                      <div key={index}>
+                        <img alt="product" src={image} />
+                        <p
+                          className="legend"
+                          onClick={() => {
+                            handleDeleteImage(image)
+                          }}
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </p>
+                      </div>
+                    ))}
+                  </Carousel>
+                </div>
+                <Dropzone setImageList={setImageList} />
               </div>
 
               <div className="product__text">
@@ -218,13 +328,45 @@ function AdminEditProduct() {
                     <input
                       type="checkbox"
                       className="online__input"
-                      checked={productOnline}
+                      checked={productOnline ? productOnline : false}
                       readOnly
                     />
 
                     <div
                       className="online__fill"
                       onClick={() => setProductOnline(!productOnline)}
+                    ></div>
+                  </label>
+                </div>
+                <div className="trend">
+                  Trend:
+                  <label className="trend">
+                    <input
+                      type="checkbox"
+                      className="online__trend"
+                      checked={productTrend ? productTrend : false}
+                      readOnly
+                    />
+
+                    <div
+                      className="online__fill_trend"
+                      onClick={() => setProductTrend(!productTrend)}
+                    ></div>
+                  </label>
+                </div>
+                <div className="home">
+                  Home:
+                  <label className="home">
+                    <input
+                      type="checkbox"
+                      className="online__home"
+                      checked={productHomePage ? productHomePage : false}
+                      readOnly
+                    />
+
+                    <div
+                      className="online__fill_home"
+                      onClick={() => setProductHomePage(!productHomePage)}
                     ></div>
                   </label>
                 </div>

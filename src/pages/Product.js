@@ -3,9 +3,11 @@ import db from '../firebase'
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import MenuLeft from '../components/MenuLeft'
+import { Carousel } from 'react-responsive-carousel'
 
 function Product() {
   const [products, setProducts] = useState([])
+  const [productImages, setProductImages] = useState([])
   const { id } = useParams()
 
   useEffect(() => {
@@ -15,6 +17,7 @@ function Product() {
       if (cancel) return
       else {
         setProducts(product.data())
+        setProductImages(product.data().images)
       }
     }
     getProduct()
@@ -39,7 +42,22 @@ function Product() {
           <div className="col__right">
             <div className="product">
               <div className="product__left">
-                <div className="product__carousel"></div>
+                <div className="product__carousel">
+                  <Carousel
+                    autoPlay
+                    infiniteLoop
+                    interval={3000}
+                    enableTouch
+                    showThumbs={false}
+                    showStatus={false}
+                  >
+                    {productImages?.map((image, index) => (
+                      <div key={index}>
+                        <img alt="product" src={image} />
+                      </div>
+                    ))}
+                  </Carousel>
+                </div>
               </div>
               <div className="product__text">
                 <h1 className="product_name">{products.name}</h1>

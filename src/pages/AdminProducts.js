@@ -37,7 +37,7 @@ function AdminProducts() {
                     <div className="front">
                       <div className="card__photo">
                         <img
-                          src="<?php echo $image_product['path'];?>/<?php echo $image_product['name'];?>"
+                          src={product.images ? product.images[0] : ''}
                           className="img-fluid"
                           alt="product"
                         />

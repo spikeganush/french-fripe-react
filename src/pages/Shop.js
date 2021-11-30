@@ -1,12 +1,30 @@
-import React from 'react'
+import { onSnapshot, collection, query, where } from '@firebase/firestore'
+import db from '../firebase'
+
+import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import CarouselTrend from '../components/CarouselTrend'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import MenuLeft from '../components/MenuLeft'
 
-import carrousel1 from '../img/RalphLaurenPoloTees-2_394x.jpg'
-import carrousel2 from '../img/FestivalCrazyPatternedShirts-2_394x.jpg'
-
 function Shop() {
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    let cancel = false
+    if (cancel) return
+    else {
+      const q2 = query(collection(db, 'products'), where('trend', '==', true))
+
+      onSnapshot(q2, (snapshot) => {
+        setProducts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      })
+    }
+
+    return () => {
+      cancel = true
+    }
+  }, [])
   return (
     <main>
       <div className="container">
@@ -36,80 +54,46 @@ function Shop() {
             <hr className="extra-margins" />
 
             <div className="row double">
-              <div className="col-lg-4">
-                <div className="card">
-                  <div className="front">
-                    <div className="card__photo">
-                      <img src={carrousel1} className="../img-fluid" alt="" />
-                    </div>
+              {products.map((product) => (
+                <div className="col-lg-4">
+                  <div className="card">
+                    <div className="front">
+                      <div className="card__photo">
+                        <img
+                          src={product ? product.images[0] : ''}
+                          className="img-fluid"
+                          alt=""
+                        />
+                      </div>
 
-                    <div className="card-block">
-                      <h4 className="card-title">Sweater</h4>
+                      <div className="card-block">
+                        <h4 className="card-title">{product.name}</h4>
 
-                      <p>Jumper sweater pull...</p>
+                        <p>AU${product.price}</p>
+                      </div>
                     </div>
+                    <div className="back">
+                      <h4 className="card-title">
+                        {product.name} <strong>AU${product.price}</strong>
+                      </h4>
+
+                      <div className="card-text">
+                        {product.short_description}
+                      </div>
+                      <div className="button">
+                        <NavLink
+                          exact
+                          to={'../product/' + product.id}
+                          className="btn btn-default"
+                        >
+                          More info
+                        </NavLink>
+                      </div>
+                    </div>
+                    <div className="background"></div>
                   </div>
-                  <div className="back">
-                    <h4 className="card-title">
-                      Sweater <strong>$30</strong>
-                    </h4>
-
-                    <div className="card-text">
-                      <p>Bags of 25Kg, top quality, from France.</p>
-                      <p>
-                        You can expect items such as jackets, coats, fleece,
-                        tees, shirts, denim, trousers, shorts & jumpers
-                      </p>
-                    </div>
-                    <div className="button">
-                      <a href="product.php" className="btn btn-default">
-                        More info
-                      </a>
-                    </div>
-                  </div>
-                  <div className="background"></div>
                 </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="card">
-                  <div className="front">
-                    <div className="card__photo">
-                      <img
-                        src={carrousel2}
-                        className="../img-fluid"
-                        alt="clothes"
-                      />
-                    </div>
-
-                    <div className="card-block">
-                      <h4 className="card-title">Harley Davidson Tee</h4>
-
-                      <p>Summer is here</p>
-                    </div>
-                  </div>
-                  <div className="back">
-                    <h4 className="card-title">
-                      Harley Davidson Tee <strong>$30</strong>
-                    </h4>
-
-                    <div className="card-text">
-                      <p>Bags of 25Kg, top quality, from France.</p>
-
-                      <p>
-                        You can expect items such as jackets, coats, fleece,
-                        tees, shirts, denim, trousers, shorts & jumpers
-                      </p>
-                    </div>
-                    <div className="button">
-                      <a href="product.php" className="btn btn-default">
-                        More info
-                      </a>
-                    </div>
-                  </div>
-                  <div className="background"></div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

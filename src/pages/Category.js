@@ -29,8 +29,10 @@ function Category() {
 
     const q2 = query(
       collection(db, 'products'),
-      where('categories_id', '==', id)
+      where('categories_id', '==', id),
+      where('online', '==', true)
     )
+
     onSnapshot(q2, (snapshot2) => {
       setProducts(snapshot2.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     })
@@ -64,7 +66,7 @@ function Category() {
                     <div className="front">
                       <div className="card__photo">
                         <img
-                          src="<?php echo $image_product['path'];?>/<?php echo $image_product['name'];?>"
+                          src={product.images ? product.images[0] : ''}
                           className="img-fluid"
                           alt="product"
                         />

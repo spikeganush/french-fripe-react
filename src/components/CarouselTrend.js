@@ -5,7 +5,13 @@ import carousel2 from '../img/FestivalCrazyPatternedShirts-2_394x.jpg'
 import carousel3 from '../img/RalphLaurenShirts-2_394x.jpg'
 
 const CarouselTrend = () => (
-  <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false}>
+  <Carousel
+    autoPlay
+    infiniteLoop
+    enableTouch
+    showThumbs={false}
+    showStatus={false}
+  >
     <div>
       <img alt="" src={carousel1} />
       <p className="legend">New collection</p>
